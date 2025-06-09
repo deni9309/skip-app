@@ -15,3 +15,30 @@
     --tw-color-warning: theme(colors.warning);
   }
 }
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: var(--tw-color-accent, #323232);
+
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--tw-color-neutral, #757575);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--tw-color-base, #848484);
+}
