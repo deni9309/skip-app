@@ -6,6 +6,7 @@ import { loadImage } from '../lib/utils/load-image'
 import Error from './shared/Error'
 import Loader from './shared/Loader'
 import { ExclamationCircleIcon } from '@heroicons/react/16/solid'
+import { cn } from '../lib/utils/clsx'
 
 const SkipSelector = () => {
   const [skipOptions, setSkipOptions] = useState<ISkip[]>([])
@@ -61,7 +62,7 @@ const SkipSelector = () => {
             key={skip.id}
             className={`rounded-lg border-2 transition-all flex flex-col justify-between p-4 ${
               selectedSkip === skip.id
-                ? 'border-accent shadow-lg shadow-current/5'
+                ? 'border-accent shadow-lg shadow-current/5 scale-105'
                 : 'border-base-200'
             }`}
           >
@@ -76,7 +77,9 @@ const SkipSelector = () => {
               </span>
             </div>
 
-            <h3 className="text-xl text-white mt-4">{skip.size} Yard Skip</h3>
+            <h3 className="text-xl text-primary-content font-semibold mt-4">
+              {skip.size} Yard Skip
+            </h3>
             <p className="text-base-content">{skip.hire_period_days} day hire period</p>
             <p className="text-secondary text-2xl font-bold mt-2">
               £{calculateTotalPrice(skip.price_before_vat, skip.vat).toFixed(2)}
@@ -85,12 +88,14 @@ const SkipSelector = () => {
             {!skip.allowed_on_road && (
               <span className="flex justify-start items-center my-2 gap-1">
                 <ExclamationCircleIcon className="w-6 h-6 text-yellow-500" />
-                <p className="text-yellow-500 text-sm">Not allowed on road placement</p>
+                <p className="text-warning-content bg-warning rounded-lg py-1 px-3 text-sm">
+                  Not allowed on road placement
+                </p>
               </span>
             )}
 
             <button
-              onClick={() => setSelectedSkip(skip.id)}
+              onClick={() => setSelectedSkip((prev) => (prev === skip.id ? null : skip.id))}
               className={`w-full mt-4 text-white py-2 rounded-lg transition-colors ${
                 selectedSkip === skip.id ? 'bg-primary' : 'bg-base-content hover:bg-base-content/80'
               }`}
@@ -101,7 +106,12 @@ const SkipSelector = () => {
         ))}
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 bg-accent p-4">
+      <div
+        className={cn(
+          'fixed bottom-0 left-0 right-0 bg-accent p-4 transition duration-500 ease-in-out overflow-hidden',
+          selectedSkip ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0',
+        )}
+      >
         <div className="container mx-auto flex justify-between items-center">
           <div className="text-base-content">
             {selectedSkip && (

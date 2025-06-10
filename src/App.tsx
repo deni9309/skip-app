@@ -2,7 +2,7 @@ import SkipSelector from './components/SkipSelector'
 
 function App() {
   return (
-    <div className="min-h-screen bg-base-100 p-8" data-theme="emerald">
+    <div className="min-h-screen bg-base-100 p-8" data-theme="lemonade">
       {/* Progress Steps */}
       <div className="flex justify-between mb-12">
         <div className="flex items-center text-primary">
