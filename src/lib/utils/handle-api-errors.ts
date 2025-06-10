@@ -10,7 +10,7 @@ export function handleApiError(error: unknown): string {
       return message
     }
 
-    return error.response?.statusText || 'An unknown server error occurred'
+    return error.response?.statusText || 'Something went wrong...'
   }
 
   if (error instanceof Error) {

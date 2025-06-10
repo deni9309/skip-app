@@ -42,3 +42,10 @@
 ::-webkit-scrollbar-thumb:hover {
   background: var(--tw-color-base, #848484);
 }
+
+
+@layer utilities {
+  .f-center {
+    @apply flex justify-center items-center;
+  }
+}

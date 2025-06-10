@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react'
 import api from '../lib/axios'
 import type { ISkip } from '../interfaces/ISkip'
-
-
+import { handleApiError } from '../lib/utils/handle-api-errors'
+import { loadImage } from '../lib/utils/load-image'
+import Error from './shared/Error'
+import Loader from './shared/Loader'
+import { ExclamationCircleIcon } from '@heroicons/react/16/solid'
 
 const SkipSelector = () => {
   const [skipOptions, setSkipOptions] = useState<ISkip[]>([])
@@ -22,8 +25,9 @@ const SkipSelector = () => {
         })
         setSkipOptions(response.data)
       } catch (error) {
-        console.error('Error fetching skip options:', error)
-        setError('Failed to load skip options')
+        console.error('Error fetching skips:', error)
+        const message = handleApiError(error)
+        setError(message)
       } finally {
         setIsLoading(false)
       }
@@ -37,51 +41,58 @@ const SkipSelector = () => {
   }
 
   if (isLoading) {
-    return <div className="text-white">Loading...</div>
+    return <Loader />
   }
 
   if (error) {
-    return <div className="text-red-500">{error}</div>
+    return <Error errorMessage={error} />
   }
 
   return (
-    <div className="bg-black p-8">
+    <div className="mx-auto max-w-6xl">
+      <div className="text-center mb-14">
+        <h1 className="text-3xl font-bold text-primary mb-2">Choose Your Skip Size</h1>
+        <p className="text-base-content text-lg">Select the skip size that best suits your needs</p>
+      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:px-10">
         {skipOptions.map((skip) => (
           <div
             key={skip.id}
-            className={`rounded-lg p-4 ${
-              selectedSkip === skip.id ? 'border-2 border-blue-500' : 'border border-gray-700'
+            className={`rounded-lg border-2 transition-all flex flex-col justify-between p-4 ${
+              selectedSkip === skip.id
+                ? 'border-accent shadow-lg shadow-current/5'
+                : 'border-base-200'
             }`}
           >
             <div className="relative">
               <img
-                src={`/images/${skip.size}yard-skip.png`} // You'll need to add these images
+                src={loadImage(skip.size)}
                 alt={`${skip.size} Yard Skip`}
-                className="w-full rounded-lg"
+                className="object-cover h-[250px] w-full overflow-hidden rounded-lg"
               />
-              <span className="absolute top-2 right-2 bg-blue-600 text-white px-3 py-1 rounded-full">
+              <span className="absolute top-2 right-2 bg-yellow-500 text-white px-3 py-1 rounded-full text-sm">
                 {skip.size} Yards
               </span>
             </div>
 
             <h3 className="text-xl text-white mt-4">{skip.size} Yard Skip</h3>
-            <p className="text-gray-400">{skip.hire_period_days} day hire period</p>
-            <p className="text-blue-500 text-2xl font-bold mt-2">
+            <p className="text-base-content">{skip.hire_period_days} day hire period</p>
+            <p className="text-secondary text-2xl font-bold mt-2">
               £{calculateTotalPrice(skip.price_before_vat, skip.vat).toFixed(2)}
             </p>
 
             {!skip.allowed_on_road && (
-              <p className="text-yellow-500 text-sm mt-2">Not allowed on road placement</p>
+              <span className="flex justify-start items-center my-2 gap-1">
+                <ExclamationCircleIcon className="w-6 h-6 text-yellow-500" />
+                <p className="text-yellow-500 text-sm">Not allowed on road placement</p>
+              </span>
             )}
 
             <button
               onClick={() => setSelectedSkip(skip.id)}
-              className={`w-full mt-4 py-2 rounded-lg ${
-                selectedSkip === skip.id
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-800 text-white hover:bg-gray-700'
+              className={`w-full mt-4 text-white py-2 rounded-lg transition-colors ${
+                selectedSkip === skip.id ? 'bg-primary' : 'bg-base-content hover:bg-base-content/80'
               }`}
             >
               {selectedSkip === skip.id ? 'Selected' : 'Select This Skip'}
@@ -90,14 +101,16 @@ const SkipSelector = () => {
         ))}
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 bg-black border-t border-gray-800 p-4">
+      <div className="fixed bottom-0 left-0 right-0 bg-accent p-4">
         <div className="container mx-auto flex justify-between items-center">
-          <div className="text-white">
+          <div className="text-base-content">
             {selectedSkip && (
               <>
-                <span className="text-gray-400">Selected: </span>
-                <span>{skipOptions.find((s) => s.id === selectedSkip)?.size} Yard Skip</span>
-                <span className="text-blue-500 ml-2">
+                <span>Selected: </span>
+                <span className="font-bold">
+                  {skipOptions.find((s) => s.id === selectedSkip)?.size} Yard Skip
+                </span>
+                <span className="font-extrabold text-lg ml-2">
                   £
                   {calculateTotalPrice(
                     skipOptions.find((s) => s.id === selectedSkip)?.price_before_vat || 0,
@@ -107,10 +120,12 @@ const SkipSelector = () => {
               </>
             )}
           </div>
-          <div className="flex gap-4">
-            <button className="px-6 py-2 bg-gray-800 text-white rounded-lg">Back</button>
+          <div className="flex font-semibold gap-4">
+            <button className="px-6 py-2 bg-base-content transition text-base-100 hover:bg-base-content/80 rounded-lg">
+              Back
+            </button>
             <button
-              className="px-6 py-2 bg-blue-600 text-white rounded-lg disabled:opacity-50"
+              className="px-6 py-2 bg-primary transition hover:bg-primary-content text-white rounded-lg disabled:opacity-50"
               disabled={!selectedSkip}
             >
               Continue
