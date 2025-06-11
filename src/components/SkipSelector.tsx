@@ -130,10 +130,10 @@ const SkipSelector = () => {
               </>
             )}
           </div>
-          <div className="flex font-semibold gap-4">
-            <button className="px-6 py-2 btn btn-neutral text-base-100 rounded-lg">Back</button>
+          <div className="flex max-md:flex-col font-semibold gap-4">
+            <button className="md:px-6 btn btn-neutral text-base-100 rounded-lg">Back</button>
             <button
-              className="px-6 btn btn-primary text-base-100 rounded-lg py-2"
+              className="md:px-6 btn btn-primary text-base-100 rounded-lg"
               disabled={!selectedSkip}
             >
               Continue
