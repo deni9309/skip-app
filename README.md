@@ -1,54 +1,96 @@
-# React + TypeScript + Vite
+# Skip App Redesign
+This is a redesigned “Choose Your Skip Size” page built using modern React tooling. The main goal was to refresh the UI/UX while preserving functionality. The application fetches data for skip options from a remote API and displays them in a responsive layout.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Technologies Used
+- **React (with TypeScript)**
+Ensures maintainable, scalable, and type-safe code.
 
-Currently, two official plugins are available:
+- **Vite**
+Provides a fast development environment and efficient production builds.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Tailwind CSS & DaisyUI**
+Offers utility-first styling and pre-styled components for rapid UI development and consistent design.
 
-## Expanding the ESLint configuration
+- **Axios**
+For making HTTP requests to the skip API endpoint.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Lucide React**
+A collection of lightweight, customizable icons used across the UI.
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+- **React Router Dom**
+Enables straightforward client-side routing.
+
+- **ESLint & Prettier**
+Enforces consistent code formatting and helps catch minor issues early.
+
+## Project Structure
+- **public/**
+    Static files (images, icons, etc.) go here.
+- **src/** Contains all core application code.
+    - **components/** contains page-level components.
+      - **shared/** holds reusable UI components.
+    App.tsx is the main application entry point.
+    - **lib/**
+    Collection of reusable utility functions and helper methods that provide common functionality across the entire application.
+    - **interfaces/**
+    Collection of TypeScript interfaces and type definitions that ensure type safety and maintain consistency across the entire application.
+
+## Approach
+Design & Layout:
+
+Focused on a modern, clean look with a card-based layout for skip listings.
+Incorporated responsive design principles to adapt the interface for both mobile and desktop.
+
+## Data Fetching:
+
+Used Axios to fetch skip options from the provided API endpoint.
+Implemented loading and error handling states for improved UX.
+
+## Responsiveness & UX:
+
+Utilized Tailwind’s responsive utility classes for improved layout on smaller screens.
+## DaisyUI components simplified styling consistency and theme switching.
+
+## Type Safety & Maintainability:
+
+Leveraged TypeScript to reduce runtime errors and ensure type definitions are enforced.
+Organized code into smaller, reusable components for better maintainability and clarity.
+
+## Version Control:
+
+Kept changes in a dedicated Git branch (if relevant), making frequent commits with clear messages to track progress and facilitate collaboration.
+
+
+## Getting Started
+
+**Clone the Repository**
+```
+git clone https://github.com/deni9309/skip-app.git
+````
+
+**Install Dependencies**
+```
+cd skip-app
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+**Run the Development Server**
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
 ```
+npm run dev
+```
+Open http://localhost:5173
+
+**Build for Production**
+```
+npm run build
+npm run preview
+```
+
+**Future Improvements**
+
+- The progress steps in the header that are currently static should be made dynamic based on the selected container, with user progression only enabled when a container is chosen. However, these steps remain static for now and are planned for future enhancements.
+- Implement more robust form validation and error handling using React Hook Form combined with Zod for schema validation and zodResolver for seamless integration.
+- Consider adding a global state management solution (e.g. Zustand) if the application grows in complexity.
+
+
